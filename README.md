@@ -14,7 +14,7 @@ the script to automate installation.
 
 This script is intend to make it easy to write automation scripts. You can
 automate installing your great programs or some other useful programs by add
-some variables and write a function in installer.sh.
+a few variables and write a function in installer.sh.
 
 
 Things installer.sh does not do
@@ -34,10 +34,10 @@ This script is not intended to install. Use this script as template and write
 as you need!
 
 
-Usage
------
+Defining a package
+------------------
 
-Download this script and define some variable and functions.
+Download this script and define some variables and functions.
 
 ### $pkgname
 
@@ -45,9 +45,9 @@ Name of package.
 
 ### $source (if needed)
 
-Newline separated list of urls to download the archive from.
+Newline separated list of urls to download archives from.
 
-Each line is just the url to download or can be like:
+Each line is just the url to download archives or can be like:
 
     package-0.1.tar.gz::http://example.com/package.tar.gz
 
@@ -58,24 +58,24 @@ git repository, clone it.
 
 ### $pkgver (optional)
 
-Version string of package.
+Version string.
 
 ### $pkgdesc (optional)
 
-Short description of package.
+Short description.
 
 ### $url (optional)
 
-Url of the package.
+Url of the software.
 
 ### install()
 
 Function to install package.
 
-When functions are called, $startdir and $srcdir are set. $startdir is the
-working directory when execute install.sh and $srcdir is directory where
+When functions are called, $startdir and $srcdir were set. $startdir is the
+working directory when install.sh was executed and $srcdir is directory where
 downloaded archive files are extracted. Usually you can use
-`cd $srcdir/$pkgname-$pkgver` to change into the directory files are extracted.
+`cd $srcdir/$pkgname-$pkgver` to change into the directory files were extracted.
 
 ### uninstall() (optional)
 

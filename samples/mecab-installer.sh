@@ -89,7 +89,7 @@ __extract(){
         *.zip)
             unzip "$1" ;;
         *)
-            __message "Did not extract Unknown type: $1" ;;
+            __message "Did not extract Unknown file: $1" ;;
     esac
 }
 
@@ -114,7 +114,6 @@ __fetch_files(){
         if __match_string "$s" "::"
         then
             file="$(echo "$s" | sed -e 's/::.*$//g')"
-            # i want to use lazy match, but POSIX sed not supports it
             url="$(echo "$s" | sed -e 's/^.*:://g')"
         else
             url="$s"
@@ -128,7 +127,7 @@ __fetch_files(){
         else
             if test -f "$file"
             then
-                __message "$file already exists: skip download" # message?
+                __message "$file already exists: skip download"
             else
                 __download_extract "$file" "$url"
             fi
