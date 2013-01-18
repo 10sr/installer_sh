@@ -2,15 +2,17 @@
 
 pkgname=mecab
 pkgver=0.994
-pkgdesc="mecab"
-url="http://example.com"
-source="$pkgname-$pkgver.tgz::http://example.com/$pkgname.tgz
-http://example.com/$pkgname-addition.tar.gz
-http://example.com/git.git"
-source="http://mecab.googlecode.com/files/$pkgname-$pkgver.tar.gz"
-md5sums=""
+pkgdesc="Yet Another Part-of-Speech and Morphological Analyzer"
+url="http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html"
+
+dicname=ipadic
+dicver=2.7.0-20070801
+
+source="http://mecab.googlecode.com/files/$pkgname-$pkgver.tar.gz
+http://mecab.googlecode.com/files/$pkgname-$dicname-$dicver.tar.gz"
 
 install(){
+    # installing mecab
     cd $srcdir/$pkgname-$pkgver || return 1
 
     # build
@@ -21,7 +23,16 @@ install(){
     make check || return 1
 
     # install
-    return 1
+    make install
+
+    # installing mecab-ipadic
+    cd $srcdir/$pkgname-$dicname-$dicver || return 1
+
+    ./configure --prefix=$HOME/.local --with-charset=utf-8 && \
+        make || return 1
+
+    make check || return 1
+
     make install
 }
 
@@ -41,8 +52,8 @@ __exit_with_mes(){
     exit $1
 }
 
-__warn(){
-    # __warn message
+__message(){
+    # __message message
     echo "$__script_name: $1" 1>&2
 }
 
@@ -78,7 +89,7 @@ __extract(){
         *.zip)
             unzip "$1" ;;
         *)
-            __warn "Did not extract Unknown type: $1" ;;
+            __message "Did not extract Unknown type: $1" ;;
     esac
 }
 
@@ -92,7 +103,7 @@ __download_extract(){
 __fetch_files(){
     if test -z "$source"
     then
-        __warn "$No sources"
+        __message "$No sources"
         return 0
     fi
 
@@ -117,7 +128,7 @@ __fetch_files(){
         else
             if test -f "$file"
             then
-                __warn "$file already exists: skip download" # warn?
+                __message "$file already exists: skip download" # message?
             else
                 __download_extract "$file" "$url"
             fi
@@ -135,6 +146,7 @@ __install(){
 
     install "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
+    __message "Install done"
 }
 
 __show_info(){
@@ -192,7 +204,7 @@ __main(){
             help)
                 __help "$@" ;;
             *)
-                __warn "invalid command: $cmd"
+                __message "invalid command: $cmd"
                 __help "$@" ;;
         esac
     fi
