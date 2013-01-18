@@ -90,4 +90,4 @@ To install the package, run:
 ## License
 
 Copyright 2013- 10sr  
-Licensed under the [GPLv3](http://www.gnu.org/licenses/gpl.html)
+Licensed under [GPLv3](http://www.gnu.org/licenses/gpl.html).
