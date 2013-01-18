@@ -1,25 +1,39 @@
 #!/bin/sh
 
-pkgname=aaa
-pkgvar=1.1-1
-pkgdesc="aaa package"
+pkgname=mecab
+pkgver=0.994
+pkgdesc="mecab"
 url="http://example.com"
-source="$pkgname-$pkgvar.tgz::http://example.com/$pkgname.tgz
+source="$pkgname-$pkgver.tgz::http://example.com/$pkgname.tgz
 http://example.com/$pkgname-addition.tar.gz
-git://example.com/git.git"
+http://example.com/git.git"
+source="http://mecab.googlecode.com/files/$pkgname-$pkgver.tar.gz"
 md5sums=""
 
-build(){
-    echo build func
-    return 10
+install(){
+    cd $srcdir/$pkgname-$pkgver || return 1
+
+    # build
+    ./configure --prefix=$HOME/.local && \
+        make || return 1
+
+    # check
+    make check || return 1
+
+    # install
+    return 1
+    make install
 }
 
-install(){
-    echo install func
+uninstall(){
+    return 1
 }
 
 #######################################
 # internal functions
+
+#######################################
+# utilities
 
 __exit_with_mes(){
     # __exit_with_mes status message
@@ -37,20 +51,32 @@ __match_string(){
     echo "$1" | grep "$2" >/dev/null 2>&1
 }
 
-__git_clone(){
-    # __git_clone dir url
-    echo git clone --depth 1 "$2" "$1"
+###################################
+# run under $srcdir
+
+__git_fetch(){
+    # __git_fetch dir url
+    if test -d "$2"
+    then
+        pushd "$2"
+        git pull origin master || \
+            __exit_with_mes $? "Git: pull failed: $2"
+        popd
+    else
+        git clone --depth 1 "$2" "$1" || \
+            __exit_with_mes $? "Git: clone failed: $2"
+    fi
 }
 
 __extract(){
     # __extract file
     case "$1" in
         *.tar)
-            echo tar xvf "$1" ;;
+            tar xvf "$1" ;;
         *.tar.gz|*.tgz)
-            echo tar xvzf "$1" ;;
+            tar xvzf "$1" ;;
         *.zip)
-            echo unzip "$1" ;;
+            unzip "$1" ;;
         *)
             __warn "Did not extract Unknown type: $1" ;;
     esac
@@ -59,52 +85,60 @@ __extract(){
 __download_extract(){
     # __download_extract file url
     # todo: use curl if wget is not avaliable
-    if __match_string "$2" "^git://" || __match_string "$2" "\\.git$"
-    then
-        dir="$(echo "$1" | sed -e 's/\.git$//g')"
-        __git_clone "$dir" "$2"
-    else
-        echo wget -O "$1" "$2" || __exit_with_mes $? "Download failed: $2"
-        __extract "$1" || __exit_with_mes $? "Extract failed: $1"
-    fi
+    wget -O "$1" "$2" || __exit_with_mes $? "Download failed: $2"
+    __extract "$1" || __exit_with_mes $? "Extract failed: $1"
 }
 
 __fetch_files(){
+    if test -z "$source"
+    then
+        __warn "$No sources"
+        return 0
+    fi
+
+    mkdir -p "$srcdir"
+    cd "$srcdir"
     for s in $source
-    # todo: consalt makepkg
     do
-        if echo "$s" | grep "::" >/dev/null 2>&1
+        if __match_string "$s" "::"
         then
             file="$(echo "$s" | sed -e 's/::.*$//g')"
-            # i want to use lazy match, but POSIX sed not support it
+            # i want to use lazy match, but POSIX sed not supports it
             url="$(echo "$s" | sed -e 's/^.*:://g')"
         else
             url="$s"
             file="$(echo "$s" | grep -o '[^/]*$')"
         fi
 
-        if ! test -f "$file"
+        if __match_string "$url" "^git://" || __match_string "$url" "\\.git$"
         then
-            __download_extract "$file" "$url"
+            dir="$(echo "$file" | sed -e 's/\.git$//g')"
+            __git_fetch "$dir" "$url"
+        else
+            if test -f "$file"
+            then
+                __warn "$file already exists: skip download" # warn?
+            else
+                __download_extract "$file" "$url"
+            fi
         fi
     done
 }
 
 ######################################
 # main functions
+# called under $startdir
 
 __install(){
     __fetch_files
-    if type build >/dev/null 2>&1
-    then
-        build "$@" || __exit_with_mes $? "Build failed"
-    fi
+    cd "$startdir"
 
     install "$@" || __exit_with_mes $? "Install failed"
+    cd "$startdir"
 }
 
 __show_info(){
-    echo "Package: $pkgname $pkgvar"
+    echo "Package: $pkgname $pkgver"
     echo "    $pkgdesc"
     echo "URL: $url"
 }
@@ -113,24 +147,59 @@ __fetch(){
     __fetch_files
 }
 
+__clean(){
+    # this may very dengerous
+    rm -rf $srcdir
+}
+
+__uninstall(){
+    uninstall"$@" || __exit_with_mes $? "Uninstall failed"
+}
+
 __help(){
-    echo help message
+    cat <<__EOC__ 1>&2
+$__script_name: usage: $__script_name <command>
+
+Commands:
+
+    install    Install package
+    info       Show info about this package
+    fetch      Only fetch and extract archives
+    uninstall  Uninstall package (if possible)
+    help       Display this help message
+__EOC__
 }
 
 __main(){
+    cd "$startdir"
     cmd="$1"
     shift
-    case "$cmd" in
-        install)
-            __install "$@" ;;
-        info)
-            __show_info "$@" ;;
-        fetch)
-            __fetch "$@" ;;
-        *)
-            __help "$@" ;;
-    esac
+    if test -z "$cmd"
+    then
+        __help
+    else
+        case "$cmd" in
+            install)
+                __install "$@" ;;
+            info)
+                __show_info "$@" ;;
+            fetch)
+                __fetch "$@" ;;
+            # clean)
+            #     __clean "$@" ;;
+            uninstall)
+                __uninstall "$@" ;;
+            help)
+                __help "$@" ;;
+            *)
+                __warn "invalid command: $cmd"
+                __help "$@" ;;
+        esac
+    fi
 }
 
-__script_name=$0
+__script_name="$0"
+# startdir="$(dirname "$0")"      # or just $PWD?
+startdir="$PWD"
+srcdir="${startdir}/src-${pkgname}"
 __main "$@"
