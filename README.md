@@ -12,9 +12,9 @@ I'm tired of downloading tarball and run commands like `./configure`, `make`,
 the tarball from, how to build the program and how to install. They should write
 the script to automate installation.
 
-This script is intend to make it easy to write scripts automating installation.
-You can automate installing your great programs or some other useful programs by
-add a few variables and write a function in installer.sh.
+installer.sh is intend to make it easy to write scripts automating installation.
+You can automate installion of your great programs or some other useful programs
+by define a few variables and a function in installer.sh.
 
 
 Things installer.sh does not do
@@ -86,3 +86,8 @@ Function to uninstall package, if possible.
 To install the package, run:
 
     $ ./installer.sh install
+
+## License
+
+Copyright 2013- 10sr  
+Licensed under the [GPLv3](http://www.gnu.org/licenses/gpl.html)
