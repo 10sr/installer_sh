@@ -1,7 +1,7 @@
 installer.sh
 ============
 
-General porpose installation script.
+Write your own installation script!
 
 
 What installer.sh is for?
@@ -12,9 +12,9 @@ I'm tired of downloading tarball and run commands like `./configure`, `make`,
 the tarball from, how to build the program and how to install. They should write
 the script to automate installation.
 
-This script is intend to make it easy to write automation scripts. You can
-automate installing your great programs or some other useful programs by add
-a few variables and write a function in installer.sh.
+This script is intend to make it easy to write scripts automating installation.
+You can automate installing your great programs or some other useful programs by
+add a few variables and write a function in installer.sh.
 
 
 Things installer.sh does not do
@@ -80,3 +80,9 @@ downloaded archive files are extracted. Usually you can use
 ### uninstall() (optional)
 
 Function to uninstall package, if possible.
+
+## Execute installer.sh
+
+To install the package, run:
+
+    $ ./installer.sh install
