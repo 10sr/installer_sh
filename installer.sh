@@ -1,39 +1,18 @@
 #!/bin/sh
 
-pkgname=mecab
-pkgver=0.994
-pkgdesc="Yet Another Part-of-Speech and Morphological Analyzer"
-url="http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html"
-
-dicname=ipadic
-dicver=2.7.0-20070801
-
-source="http://mecab.googlecode.com/files/$pkgname-$pkgver.tar.gz
-http://mecab.googlecode.com/files/$pkgname-$dicname-$dicver.tar.gz"
+pkgname=name
+pkgver=0.1
+pkgdesc="Package description"
+url="http://url.to/software/page"
+source="http://url.to/archive/file.tar.gz
+pkg2.zip::http://second.package/with/name.zip"
 
 install(){
-    # installing mecab
-    cd $srcdir/$pkgname-$pkgver || return 1
-
-    # build
-    ./configure --prefix=$HOME/.local && \
-        make || return 1
-
-    # check
-    make check || return 1
-
-    # install
-    make install
-
-    # installing mecab-ipadic
-    cd $srcdir/$pkgname-$dicname-$dicver || return 1
-
-    ./configure --prefix=$HOME/.local --with-charset=utf-8 && \
-        make || return 1
-
-    make check || return 1
-
-    make install
+    cd $srcdir/$pkgname-$pkgver && \
+        ./configure && \
+        make && \
+        make check && \
+        make install || return $?
 }
 
 uninstall(){
