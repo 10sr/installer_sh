@@ -4,7 +4,7 @@ pkgname=name
 pkgver=0.1
 pkgdesc="Package description"
 url="http://url.to/software/page"
-source="http://url.to/archive/file.tar.gz
+source="http://url.to/archive/file/$pkgname-$pkgver.tar.gz
 pkg2.zip::http://second.package/with/name.zip"
 
 install(){
@@ -157,7 +157,12 @@ Commands:
     fetch      Only fetch and extract archives
     uninstall  Uninstall package (if possible)
     help       Display this help message
+    version    Display version info
 __EOC__
+}
+
+__version_info(){
+    echo $__script_name $__version 1>&2
 }
 
 __main(){
@@ -179,14 +184,18 @@ __main(){
             #     __clean "$@" ;;
             uninstall)
                 __uninstall "$@" ;;
-            help)
+            help|--help|-h)
                 __help "$@" ;;
+            version|--version|-v)
+                __version_info "$@" ;;
             *)
                 __message "invalid command: $cmd"
                 __help "$@" ;;
         esac
     fi
 }
+
+__version=0.1
 
 __script_name="$0"
 # startdir="$(dirname "$0")"      # or just $PWD?
