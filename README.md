@@ -86,8 +86,3 @@ Function to uninstall package, if possible.
 To install the package, run:
 
     $ ./installer.sh install
-
-## License
-
-Copyright 2013- 10sr  
-Licensed under [GPLv3](http://www.gnu.org/licenses/gpl.html).
