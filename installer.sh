@@ -91,7 +91,6 @@ __download(){
 
 __download_extract(){
     # __download_extract file url
-    # todo: use curl if wget is not avaliable
     __message "Start downloading $2"
     __download "$1" "$2" || __exit_with_mes $? "Download failed: $2"
     cd "$srcdir"
@@ -145,7 +144,7 @@ __install(){
 
     install "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
-    __message "Install done"
+    __exit_with_mes 0 "Install done"
 }
 
 __show_info(){
@@ -156,6 +155,7 @@ __show_info(){
 
 __fetch(){
     __fetch_files
+    __message "Fetch files done"
 }
 
 __clean(){
@@ -165,6 +165,7 @@ __clean(){
 
 __uninstall(){
     uninstall "$@" || __exit_with_mes $? "Uninstall failed"
+    __exit_with_mes 0 "Uninstall done"
 }
 
 __help(){

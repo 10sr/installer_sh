@@ -14,7 +14,7 @@ They should write the script to automate installation.
 
 installer.sh makes it easy to write scripts automating installation. You can
 automate installion of your great softwares or some other useful softwares by
-define a few variables and a function in installer.sh.
+defining a few variables and a function in installer.sh.
 
 installer.sh is strongly inspired by [ArchLinux](http://www.archlinux.org/)'s
 makepkg and [PKGBUILD](https://wiki.archlinux.org/index.php/Creating_Packages).
