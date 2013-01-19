@@ -11,12 +11,14 @@ dicver=2.7.0-20070801
 source="http://mecab.googlecode.com/files/$pkgname-$pkgver.tar.gz
 http://mecab.googlecode.com/files/$pkgname-$dicname-$dicver.tar.gz"
 
+_prefix="$HOME/.local"
+
 install(){
     # installing mecab
     cd $srcdir/$pkgname-$pkgver || return 1
 
     # build
-    ./configure --prefix=$HOME/.local && \
+    ./configure --prefix=$_prefix && \
         make || return 1
 
     # check
@@ -28,7 +30,7 @@ install(){
     # installing mecab-ipadic
     cd $srcdir/$pkgname-$dicname-$dicver || return 1
 
-    ./configure --prefix=$HOME/.local --with-charset=utf-8 && \
+    ./configure --prefix=$_prefix --with-charset=utf-8 && \
         make || return 1
 
     make check || return 1
@@ -69,10 +71,9 @@ __git_fetch(){
     # __git_fetch dir url
     if test -d "$2"
     then
-        pushd "$2"
+        cd "$2"
         git pull origin master || \
             __exit_with_mes $? "Git: pull failed: $2"
-        popd
     else
         git clone --depth 1 "$2" "$1" || \
             __exit_with_mes $? "Git: clone failed: $2"
@@ -83,20 +84,41 @@ __extract(){
     # __extract file
     case "$1" in
         *.tar)
-            tar xvf "$1" ;;
+            tar -xvf "$1" ;;
         *.tar.gz|*.tgz)
-            tar xvzf "$1" ;;
+            tar -xvzf "$1" ;;
+        *.tar.bz2|*.tbz)
+            tar -xvjf "$1" ;;
+        *.tar.xz|*.txz)
+            tar -xvJf "$1" ;;
         *.zip)
             unzip "$1" ;;
+        *.7z)
+            7z x "$1" ;;
         *)
-            __message "Did not extract Unknown file: $1" ;;
+            __message "Unknown file type $1: skip extract" ;;
     esac
+}
+
+__download(){
+    # __download url file
+    if type wget >/dev/null 2>&1
+    then
+        wget -O "$2" "$1"
+    elif type curl >/dev/null 2>&1
+    then
+        curl --url "$1" --output "$2"
+    else
+        __exit_with_mes $? "No command to download found"
+    fi
 }
 
 __download_extract(){
     # __download_extract file url
-    # todo: use curl if wget is not avaliable
-    wget -O "$1" "$2" || __exit_with_mes $? "Download failed: $2"
+    # todo: checksum
+    __message "Start downloading $2"
+    __download "$2" "$1" || __exit_with_mes $? "Download failed: $2"
+    cd "$srcdir"
     __extract "$1" || __exit_with_mes $? "Extract failed: $1"
 }
 
@@ -109,8 +131,13 @@ __fetch_files(){
 
     mkdir -p "$srcdir"
     cd "$srcdir"
-    for s in $source
+    echo "$source" | while read s
     do
+        if test -z "$s"
+        then
+            continue
+        fi
+
         if __match_string "$s" "::"
         then
             file="$(echo "$s" | sed -e 's/::.*$//g')"
@@ -124,12 +151,14 @@ __fetch_files(){
         then
             dir="$(echo "$file" | sed -e 's/\.git$//g')"
             __git_fetch "$dir" "$url"
+            cd "$srcdir"
         else
             if test -f "$file"
             then
                 __message "$file already exists: skip download"
             else
                 __download_extract "$file" "$url"
+                cd "$srcdir"
             fi
         fi
     done
@@ -145,7 +174,7 @@ __install(){
 
     install "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
-    __message "Install done"
+    __exit_with_mes 0 "Install done"
 }
 
 __show_info(){
@@ -155,16 +184,17 @@ __show_info(){
 }
 
 __fetch(){
-    __fetch_files
+    __fetch_files && __message "Fetch files done"
 }
 
 __clean(){
-    # this may very dengerous
+    # this may be very dengerous
     rm -rf $srcdir
 }
 
 __uninstall(){
-    uninstall"$@" || __exit_with_mes $? "Uninstall failed"
+    uninstall "$@" || __exit_with_mes $? "Uninstall failed"
+    __exit_with_mes 0 "Uninstall done"
 }
 
 __help(){
@@ -178,17 +208,22 @@ Commands:
     fetch      Only fetch and extract archives
     uninstall  Uninstall package (if possible)
     help       Display this help message
+    version    Display version info
 __EOC__
+}
+
+__version_info(){
+    echo $__script_name v$__version 1>&2
 }
 
 __main(){
     cd "$startdir"
     cmd="$1"
-    shift
     if test -z "$cmd"
     then
         __help
     else
+        shift
         case "$cmd" in
             install)
                 __install "$@" ;;
@@ -200,8 +235,10 @@ __main(){
             #     __clean "$@" ;;
             uninstall)
                 __uninstall "$@" ;;
-            help)
+            help|--help|-h)
                 __help "$@" ;;
+            version|--version|-v)
+                __version_info "$@" ;;
             *)
                 __message "invalid command: $cmd"
                 __help "$@" ;;
@@ -209,8 +246,10 @@ __main(){
     fi
 }
 
+__version=0.1.1
+
 __script_name="$0"
-# startdir="$(dirname "$0")"      # or just $PWD?
-startdir="$PWD"
-srcdir="${startdir}/src-${pkgname}"
+test -z "$startdir" && startdir="$PWD"
+test -z "$srcdir" && srcdir="${startdir}/src-${pkgname}"
+# todo: how to do about security?
 __main "$@"
