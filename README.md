@@ -7,10 +7,10 @@ Write your own installation script!
 What is installer.sh for?
 -------------------------
 
-I'm tired of downloading tarballs and running commands like `./configure`,
-`make`, `make install` ... many many times. Definitely developers know where to
-download the tarballs from, how to build the softwares and how to install them.
-They should write the script to automate installation.
+I'm tired of downloading tarballs, extracting them and running commands like
+`./configure`, `make`, `make install` ... many many times. Definitely developers
+know where to download the tarballs from, how to build the softwares and how to
+install them. They should write the script to automate installation.
 
 installer.sh makes it easy to write scripts automating installation. You can
 automate installion of your great softwares or some other useful softwares by
@@ -38,7 +38,7 @@ Install
 -------
 
 installer.sh is not intended to install. Use this script as a template and write
-as you need!
+commands as you need!
 
 
 Defining a package

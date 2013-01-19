@@ -220,7 +220,6 @@ __main(){
 __version=0.1.1
 
 __script_name="$0"
-# startdir="$(dirname "$0")"      # or just $PWD?
-startdir="$PWD"
-srcdir="${startdir}/src-${pkgname}"
+test -z "$startdir" && startdir="$PWD"
+test -z "$srcdir" && srcdir="${startdir}/src-${pkgname}"
 __main "$@"
