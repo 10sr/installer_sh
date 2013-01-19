@@ -3,9 +3,8 @@
 pkgname=name
 pkgver=0.1
 pkgdesc="Package description"
-url="http://url.to/software/page"
-source="http://url.to/archive/file/$pkgname-$pkgver.tar.gz
-pkg2.zip::http://second.package/with/name.zip"
+url="http://example.com/software/page"
+source="http://example.com/archive/file/$pkgname-$pkgver.tar.gz"
 
 install(){
     cd $srcdir/$pkgname-$pkgver && \
@@ -217,7 +216,7 @@ __main(){
     fi
 }
 
-__version=0.1
+__version=0.1.1
 
 __script_name="$0"
 # startdir="$(dirname "$0")"      # or just $PWD?
