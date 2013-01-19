@@ -11,7 +11,7 @@ install(){
         ./configure && \
         make && \
         make check && \
-        make install || return $?
+        sudo make install || return $?
 }
 
 uninstall(){
