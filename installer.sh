@@ -190,11 +190,11 @@ __version_info(){
 __main(){
     cd "$startdir"
     cmd="$1"
-    shift
     if test -z "$cmd"
     then
         __help
     else
+        shift
         case "$cmd" in
             install)
                 __install "$@" ;;
