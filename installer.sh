@@ -227,4 +227,5 @@ __version=0.1.1
 __script_name="$0"
 test -z "$startdir" && startdir="$PWD"
 test -z "$srcdir" && srcdir="${startdir}/src-${pkgname}"
+# todo: how to do about security?
 __main "$@"
