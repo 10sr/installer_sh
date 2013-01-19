@@ -91,6 +91,7 @@ __download(){
 
 __download_extract(){
     # __download_extract file url
+    # todo: checksum
     __message "Start downloading $2"
     __download "$2" "$1" || __exit_with_mes $? "Download failed: $2"
     cd "$srcdir"
@@ -106,8 +107,13 @@ __fetch_files(){
 
     mkdir -p "$srcdir"
     cd "$srcdir"
-    for s in $source
+    echo "$source" | while read s
     do
+        if test -z "$s"
+        then
+            continue
+        fi
+
         if __match_string "$s" "::"
         then
             file="$(echo "$s" | sed -e 's/::.*$//g')"
@@ -148,14 +154,13 @@ __install(){
 }
 
 __show_info(){
-    echo "Package: $pkgname-$pkgver"
+    echo "Package: $pkgname $pkgver"
     echo "    $pkgdesc"
     echo "URL: $url"
 }
 
 __fetch(){
-    __fetch_files
-    __message "Fetch files done"
+    __fetch_files && __message "Fetch files done"
 }
 
 __clean(){
@@ -184,7 +189,7 @@ __EOC__
 }
 
 __version_info(){
-    echo $__script_name $__version 1>&2
+    echo $__script_name v$__version 1>&2
 }
 
 __main(){
