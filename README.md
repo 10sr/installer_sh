@@ -55,7 +55,7 @@ Name of package.
 Newline separated list of urls to download archives from.
 
 Each line is just the url to download archives or can be like
-`package-0.1.tar.gz::http://example.com/package.tar.gz`. In this form, you can
+`$pkgname-$pkgver.tar.gz::http://example.com/file.tar.gz`. In this form, you can
 change the name of downloaded archive.
 
 Each Downloaded file is extracted immediately in $srcdir If it it a archive. If
