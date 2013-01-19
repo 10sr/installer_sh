@@ -4,7 +4,7 @@ installer.sh
 Write your own installation script!
 
 
-What installer.sh is for?
+What is installer.sh for?
 -------------------------
 
 I'm tired of downloading tarball and running commands like `./configure`,
@@ -16,7 +16,7 @@ installer.sh makes it easy to write scripts automating installation. You can
 automate installion of your great programs or some other useful programs by
 define a few variables and a function in installer.sh.
 
-installer.sh is strongly inspired [ArchLinux](http://www.archlinux.org/)'s
+installer.sh is strongly inspired by [ArchLinux](http://www.archlinux.org/)'s
 makepkg and [PKGBUILD](https://wiki.archlinux.org/index.php/Creating_Packages).
 
 
@@ -29,15 +29,15 @@ installer.sh is not a package manager. It does not:
 * record installed files (and uninstall packages by removing these files)
 * update packages automatically
 
-And of course you should use package manager if the package is provided by the
+And of course you should use package manager if the software is provided by the
 package manager you are using. This script is for softwares which is not so
-popular, or which is not updated to newer version on your system.
+popular, or not updated to newer version on your system.
 
 
 Install
 -------
 
-installer.sh is not intended to install. Use this script as template and write
+installer.sh is not intended to install. Use this script as a template and write
 as you need!
 
 
@@ -58,8 +58,8 @@ Each line is just the url to download archives or can be like
 `package-0.1.tar.gz::http://example.com/package.tar.gz`. In this form, you can
 change the name of downloaded archive.
 
-Downloaded files are extracted immediately in $srcdir. If the url looks like a
-git repository, clone it.
+Each Downloaded file is extracted immediately in $srcdir If it it a archive. If
+the url looks like a git repository, clone it.
 
 ### $pkgver (optional)
 
@@ -79,12 +79,12 @@ Function to install package.
 
 When functions are called, $startdir and $srcdir were set. $startdir is the
 working directory when install.sh was executed and $srcdir is directory where
-downloaded archive files are extracted. Usually you can use command like
+downloaded archive files are extracted. Usually you can use a command like
 `cd $srcdir/$pkgname-$pkgver` to go into the directory files were extracted.
 
 ### uninstall() (optional)
 
-Function to uninstall package, if possible.
+Function to uninstall the package, if possible.
 
 ## Execute installer.sh
 
@@ -92,7 +92,7 @@ To install the package, run:
 
     $ ./installer.sh install
 
-Only download packages and from $source and extract them by:
+Only download archive listed in $source and extract them by:
 
     $ ./installer.sh fetch
 
