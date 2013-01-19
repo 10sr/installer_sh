@@ -77,13 +77,13 @@ __extract(){
 }
 
 __download(){
-    # __download file url
+    # __download url file
     if type wget >/dev/null 2>&1
     then
-        wget -O "$1" "$2"
+        wget -O "$2" "$1"
     elif type curl >/dev/null 2>&1
     then
-        curl --url "$2" --output "$1"
+        curl --url "$1" --output "$2"
     else
         __exit_with_mes $? "No command to download found"
     fi
@@ -92,7 +92,7 @@ __download(){
 __download_extract(){
     # __download_extract file url
     __message "Start downloading $2"
-    __download "$1" "$2" || __exit_with_mes $? "Download failed: $2"
+    __download "$2" "$1" || __exit_with_mes $? "Download failed: $2"
     cd "$srcdir"
     __extract "$1" || __exit_with_mes $? "Extract failed: $1"
 }
