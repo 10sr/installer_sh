@@ -114,8 +114,9 @@ __fetch_files(){
             continue
         fi
 
-        if __match_string "$s" "::"
+        if expr "$s" : "^.*::"
         then
+            # todo: use expr
             file="$(echo "$s" | sed -e 's/::.*$//g')"
             url="$(echo "$s" | sed -e 's/^.*:://g')"
         else
