@@ -52,14 +52,16 @@ Name of package.
 
 ### $source (if needed)
 
-Newline separated list of urls to download archives from.
+Newline separated list of urls of archives. Archive listed here will be
+downloaded and extracted automatically. If the archives already exist, do
+not download twice.
 
 Each line is just the url to download archives or can be like
 `$pkgname-$pkgver.tar.gz::http://example.com/file.tar.gz`. In this form, you can
 change the name of downloaded archive.
 
-Each Downloaded file is extracted immediately in $srcdir If it it a archive. If
-the url looks like a git repository, clone it.
+Each Downloaded file is extracted immediately in $srcdir If it has a archive
+ suffix. If the url looks like a git repository, clone it.
 
 ### $pkgver (optional)
 
@@ -96,6 +98,9 @@ To install the package, run:
 Only download archive listed in $source and extract them by:
 
     $ ./installer.sh fetch
+
+This command is especially useful when you are writing `install()` or you want
+to issue some commands before install.
 
 ## License
 
