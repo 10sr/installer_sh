@@ -10,9 +10,10 @@ _prefix=$HOME/.local
 
 install(){
     cd $srcdir/${pkgname}_$pkgver && \
-        make && \
-        make check && \
-        command install -Dm755 bin/7za $_prefix/bin || return $?
+        make 7z && \
+        make test_7z && \
+        sed --in-place -e "s|^DEST_HOME=/usr/local$|DEST_HOME=$_prefix|" install.sh && \
+        ./install.sh
 }
 
 uninstall(){
