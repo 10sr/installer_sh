@@ -15,27 +15,18 @@ _prefix="$HOME/.local"
 
 install(){
     # installing mecab
-    cd $srcdir/$pkgname-$pkgver || return 1
-
-    # build
-    ./configure --prefix=$_prefix && \
-        make || return 1
-
-    # check
-    make check || return 1
-
-    # install
-    make install
+    cd $srcdir/$pkgname-$pkgver && \
+        ./configure --prefix=$_prefix && \
+        make && \
+        make check && \
+        make install || return $?
 
     # installing mecab-ipadic
-    cd $srcdir/$pkgname-$dicname-$dicver || return 1
-
-    ./configure --prefix=$_prefix --with-charset=utf-8 && \
-        make || return 1
-
-    make check || return 1
-
-    make install
+    cd $srcdir/$pkgname-$dicname-$dicver && \
+        ./configure --prefix=$_prefix --with-charset=utf-8 && \
+        make && \
+        make check && \
+        make install
 }
 
 uninstall(){

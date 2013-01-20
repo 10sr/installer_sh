@@ -9,9 +9,9 @@ source="$url/sl/$pkgname.tar"
 _prefix="$HOME/.local"
 
 install(){
-    cd $srcdir/$pkgname
-    make
-    command install -Dm755 $pkgname "$_prefix/bin/$pkgname"
+    cd $srcdir/$pkgname && \
+        make && \
+        command install -Dm755 $pkgname "$_prefix/bin/$pkgname"
 }
 
 uninstall(){
