@@ -202,6 +202,7 @@ __main(){
     else
         shift
         case "$cmd" in
+            # todo: add do command
             install)
                 __install "$@" ;;
             info)
