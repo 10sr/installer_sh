@@ -2,7 +2,7 @@
 
 pkgname=p7zip
 pkgver=9.20.1
-pkgdesc="Package description"
+pkgdesc="A file archiver with highest compression ratio"
 url="http://p7zip.sourceforge.net/"
 source="$pkgname_$pkgver.tar.bz2::http://sourceforge.jp/frs/g_redir.php?m=jaist&f=%2Fp7zip%2F${pkgname}%2F${pkgver}%2F${pkgname}_${pkgver}_src_all.tar.bz2"
 

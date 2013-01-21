@@ -44,6 +44,7 @@ __match_string(){
 # run under $srcdir
 
 __git_fetch(){
+    # todo: remove support of git repository. i think it complicate things.
     # __git_fetch dir url
     if test -d "$2"
     then
@@ -161,6 +162,7 @@ __show_info(){
 }
 
 __fetch(){
+    # todo: use fetch() if exists
     __fetch_files && __message "Fetch files done"
 }
 
@@ -175,6 +177,7 @@ __uninstall(){
 }
 
 __help(){
+    # add support help_*()
     cat <<__EOC__ 1>&2
 $__script_name: usage: $__script_name <command>
 
@@ -183,7 +186,6 @@ Commands:
     install    Install package
     info       Show info about this package
     fetch      Only fetch and extract archives
-    uninstall  Uninstall package (if possible)
     help       Display this help message
     version    Display version info
 __EOC__
@@ -202,6 +204,7 @@ __main(){
     else
         shift
         case "$cmd" in
+            # todo: add do command
             install)
                 __install "$@" ;;
             info)

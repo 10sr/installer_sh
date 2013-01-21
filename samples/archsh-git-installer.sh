@@ -4,6 +4,7 @@ pkgname=archsh_py
 pkgver=git
 pkgdesc="Shell for archive"
 url="https://github.com/10sr/$pkgname"
+# git repository support will be soon removed. do not use!
 source="git@github.com:10sr/$pkgname.git"
 
 install(){

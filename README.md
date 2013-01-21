@@ -54,14 +54,14 @@ Name of package.
 
 Newline separated list of urls of archives. Archive listed here will be
 downloaded and extracted automatically. If the archives already exist, do
-not download twice.
+not download them twice.
 
 Each line is just the url to download archives or can be like
 `$pkgname-$pkgver.tar.gz::http://example.com/file.tar.gz`. In this form, you can
 change the name of downloaded archive.
 
 Each Downloaded file is extracted immediately in $srcdir If it has a archive
- suffix. If the url looks like a git repository, clone it.
+ suffix.
 
 ### $pkgver (optional)
 
@@ -84,10 +84,6 @@ extracted, and $startdir and $srcdir were set. $startdir is the working
 directory when install.sh was executed and $srcdir is directory where
 downloaded archive files are extracted. Usually you can use a command like
 `cd $srcdir/$pkgname-$pkgver` to go into the directory files were extracted.
-
-### uninstall() (optional)
-
-Function to uninstall the package, if possible.
 
 ## Execute installer.sh
 
