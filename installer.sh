@@ -14,10 +14,6 @@ install(){
         sudo make install
 }
 
-uninstall(){
-    return 1
-}
-
 #######################################
 # internal functions
 
