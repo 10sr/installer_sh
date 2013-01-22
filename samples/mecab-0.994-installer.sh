@@ -13,20 +13,24 @@ http://mecab.googlecode.com/files/$pkgname-$dicname-$dicver.tar.gz"
 
 _prefix="$HOME/.local"
 
-install(){
-    # installing mecab
+install_mecab(){
     cd $srcdir/$pkgname-$pkgver && \
         ./configure --prefix=$_prefix && \
         make && \
         make check && \
-        make install || return $?
+        make install
+}
 
-    # installing mecab-ipadic
+install_ipadic(){
     cd $srcdir/$pkgname-$dicname-$dicver && \
         ./configure --prefix=$_prefix --with-charset=utf-8 && \
         make && \
         make check && \
         make install
+}
+
+install(){
+    install_mecab && install_ipadic
 }
 
 uninstall(){
