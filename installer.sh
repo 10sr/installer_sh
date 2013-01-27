@@ -158,7 +158,7 @@ __show_info(){
 }
 
 __fetch(){
-    # todo: use fetch() if exists
+b    # todo: use fetch() if exists
     __fetch_files && __message "Fetch files done"
 }
 
@@ -167,15 +167,16 @@ __clean(){
     rm -rf $srcdir
 }
 
-__uninstall(){
-    uninstall "$@" || __exit_with_mes $? "Uninstall failed"
-    __exit_with_mes 0 "Uninstall done"
-}
-
 __help(){
     # add support help_*()
+    if test -n "$1"
+    then
+        help_"$1"
+        exit 0
+    fi
+
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command>
+$__script_name: usage: $__script_name <command> [arg ...]
 
 Commands:
 
@@ -184,6 +185,8 @@ Commands:
     fetch      Only fetch and extract archives
     help       Display this help message
     version    Display version info
+
+See '$__script_name help <command>' for more information if available.
 __EOC__
 }
 
@@ -209,8 +212,6 @@ __main(){
                 __fetch "$@" ;;
             # clean)
             #     __clean "$@" ;;
-            uninstall)
-                __uninstall "$@" ;;
             help|--help|-h)
                 __help "$@" ;;
             version|--version|-v)
@@ -222,7 +223,7 @@ __main(){
     fi
 }
 
-__version=0.1.1
+__version=0.1.2
 
 __script_name="$0"
 test -z "$startdir" && startdir="$PWD"
