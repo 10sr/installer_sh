@@ -39,20 +39,6 @@ __match_string(){
 ###################################
 # run under $srcdir
 
-__git_fetch(){
-    # todo: remove support of git repository. i think it complicate things.
-    # __git_fetch dir url
-    if test -d "$2"
-    then
-        cd "$2"
-        git pull origin master || \
-            __exit_with_mes $? "Git: pull failed: $2"
-    else
-        git clone --depth 1 "$2" "$1" || \
-            __exit_with_mes $? "Git: clone failed: $2"
-    fi
-}
-
 __extract(){
     # __extract file
     case "$1" in
@@ -121,19 +107,12 @@ __fetch_files(){
             file="$(echo "$s" | grep -o '[^/]*$')"
         fi
 
-        if __match_string "$url" "^git://" || __match_string "$url" "\\.git$"
+        if test -f "$file"
         then
-            dir="$(echo "$file" | sed -e 's/\.git$//g')"
-            __git_fetch "$dir" "$url"
-            cd "$srcdir"
+            __message "$file already exists: skip download"
         else
-            if test -f "$file"
-            then
-                __message "$file already exists: skip download"
-            else
-                __download_extract "$file" "$url"
-                cd "$srcdir"
-            fi
+            __download_extract "$file" "$url"
+            cd "$srcdir"
         fi
     done
 }
@@ -167,6 +146,12 @@ __clean(){
     rm -rf $srcdir
 }
 
+help_help(){
+    cat <<__EOC__
+$__script_name help: usage: $__script_name help <command>
+__EOC__
+}
+
 __help(){
     # add support help_*()
     if test -n "$1"
@@ -176,18 +161,19 @@ __help(){
     fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [arg ...]
+$__script_name: usage: $__script_name <command> [<args>]
 
 Commands:
 
-    install    Install package
-    info       Show info about this package
-    fetch      Only fetch and extract archives
-    help       Display this help message
-    version    Display version info
-
-See '$__script_name help <command>' for more information if available.
+    install  Install package.
+             args are passed to install().
+    info     Show info about this package.
+    fetch    Only fetch and extract archives.
+    help     Display this help message.
+             help <command> may provide additional help.
+    version  Display version info.
 __EOC__
+# See '$__script_name help <command>' for more information if available.
 }
 
 __version_info(){
