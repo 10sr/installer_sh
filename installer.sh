@@ -63,10 +63,10 @@ __download(){
     # __download url file
     if type wget >/dev/null 2>&1
     then
-        wget -O "$2" "$1"
+        $debug wget -O "$2" "$1"
     elif type curl >/dev/null 2>&1
     then
-        curl --url "$1" --output "$2"
+        $debug curl --url "$1" --output "$2"
     else
         __exit_with_mes $? "No command to download found"
     fi
@@ -78,7 +78,7 @@ __download_extract(){
     __message "Start downloading $2"
     __download "$2" "$1" || __exit_with_mes $? "Download failed: $2"
     cd "$srcdir"
-    __extract "$1" || __exit_with_mes $? "Extract failed: $1"
+    $debug __extract "$1" || __exit_with_mes $? "Extract failed: $1"
 }
 
 __fetch_files(){
@@ -100,11 +100,14 @@ __fetch_files(){
         if expr "$s" : "^.*::"
         then
             # todo: use expr
-            file="$(echo "$s" | sed -e 's/::.*$//g')"
-            url="$(echo "$s" | sed -e 's/^.*:://g')"
+            file="$(expr "$s" : '\(.*\)::')"
+            url="$(expr "$s" : '.*::\(.*\)$')"
+            # file="$(echo "$s" | sed -e 's/::.*$//g')"
+            # url="$(echo "$s" | sed -e 's/^.*:://g')"
         else
             url="$s"
-            file="$(echo "$s" | grep -o '[^/]*$')"
+            # file="$(echo "$s" | grep -o '[^/]*$')"
+            file="$(basename "$s")"
         fi
 
         if test -f "$file"
@@ -125,7 +128,7 @@ __install(){
     __fetch_files
     cd "$startdir"
 
-    install "$@" || __exit_with_mes $? "Install failed"
+    $debug install "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
     __exit_with_mes 0 "Install done"
 }
@@ -196,12 +199,15 @@ __main(){
                 __show_info "$@" ;;
             fetch)
                 __fetch "$@" ;;
-            # clean)
-            #     __clean "$@" ;;
             help|--help|-h)
                 __help "$@" ;;
             version|--version|-v)
                 __version_info "$@" ;;
+            __clean)
+                __clean "$@" ;;
+            __debug)
+                debug=echo
+                __install "$@" ;;
             *)
                 __message "invalid command: $cmd"
                 __help "$@" ;;
