@@ -97,7 +97,7 @@ __fetch_files(){
             continue
         fi
 
-        if expr "$s" : "^.*::"
+        if expr "$s" : ".*::" >/dev/null
         then
             # todo: use expr
             file="$(expr "$s" : '\(.*\)::')"
