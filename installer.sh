@@ -28,7 +28,12 @@ __exit_with_mes(){
 
 __message(){
     # __message message
-    echo "$__script_name: $1" 1>&2
+    # echo "$__script_name: $1" 1>&2
+    echo ":: $1" 1>&2
+}
+
+__warn(){
+    echo "$1" 1>&2
 }
 
 __match_string(){
@@ -41,6 +46,7 @@ __match_string(){
 
 __extract(){
     # __extract file
+    __message "Start extracting $1..."
     case "$1" in
         *.tar)
             tar -xvf "$1" ;;
@@ -55,12 +61,13 @@ __extract(){
         *.7z)
             7z x "$1" ;;
         *)
-            __message "Unknown file type $1: skip extract" ;;
+            __warn "Unknown file type $1: Skip extract" ;;
     esac
 }
 
 __download(){
     # __download url file
+    __message "Start downloading $2..."
     if type wget >/dev/null 2>&1
     then
         $debug wget -O "$2" "$1"
@@ -75,7 +82,6 @@ __download(){
 __download_extract(){
     # __download_extract file url
     # todo: checksum
-    __message "Start downloading $2"
     __download "$2" "$1" || __exit_with_mes $? "Download failed: $2"
     cd "$srcdir"
     $debug __extract "$1" || __exit_with_mes $? "Extract failed: $1"
@@ -84,7 +90,7 @@ __download_extract(){
 __fetch_files(){
     if test -z "$source"
     then
-        __message "$No sources"
+        __warn "$No sources to download."
         return 0
     fi
 
@@ -112,7 +118,7 @@ __fetch_files(){
 
         if test -f "$file"
         then
-            __message "$file already exists: skip download"
+            __warn "$file already exists: Skip download"
         else
             __download_extract "$file" "$url"
             cd "$srcdir"
@@ -128,9 +134,10 @@ __install(){
     __fetch_files
     cd "$startdir"
 
+    __message "Start installing..."
     $debug install "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
-    __exit_with_mes 0 "Install done"
+    __warn "Install done"
 }
 
 __show_info(){
@@ -141,7 +148,7 @@ __show_info(){
 
 __fetch(){
 b    # todo: use fetch() if exists
-    __fetch_files && __message "Fetch files done"
+    __fetch_files && __warn "Fetch files done."
 }
 
 __clean(){
