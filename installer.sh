@@ -36,11 +36,6 @@ __warn(){
     echo "$1" 1>&2
 }
 
-__match_string(){
-    # __match_string str pattern
-    echo "$1" | grep "$2" >/dev/null 2>&1
-}
-
 ###################################
 # run under $srcdir
 
