@@ -75,15 +75,16 @@ Short description.
 
 Url of the software.
 
-### install()
+### main()
 
-Function to install package.
+Function called when installing package.
 
 When functions are called, archives listed in $sources were downloaded and
 extracted, and $startdir and $srcdir were set. $startdir is the working
 directory when install.sh was executed and $srcdir is directory where
 downloaded archive files are extracted. Usually you can use a command like
-`cd $srcdir/$pkgname-$pkgver` to go into the directory files were extracted.
+`cd $srcdir/$pkgname-$pkgver` to go into the directory the files were
+extracted.
 
 ## Execute installer.sh
 
@@ -91,11 +92,11 @@ To install the package, run:
 
     $ ./installer.sh install
 
-Only download archive listed in $source and extract them by:
+Only download archive listed in $source and extract them by following command:
 
     $ ./installer.sh fetch
 
-This command is especially useful when you are writing `install()` or you want
+This command is especially useful when you are writing `main()` or you want
 to issue some commands before install.
 
 ## License

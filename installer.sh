@@ -6,7 +6,7 @@ pkgdesc="Package description"
 url="http://example.com/software/page"
 source="http://example.com/archive/file/$pkgname-$pkgver.tar.gz"
 
-install(){
+main(){
     cd $srcdir/$pkgname-$pkgver && \
         ./configure && \
         make && \
@@ -135,7 +135,7 @@ __install(){
     cd "$startdir"
 
     __message "Start installing..."
-    $debug install "$@" || __exit_with_mes $? "Install failed"
+    $debug main "$@" || __exit_with_mes $? "Install failed"
     cd "$startdir"
     __warn "Install done"
 }
