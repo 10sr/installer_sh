@@ -7,12 +7,22 @@ url="http://example.com/software/page"
 source="http://example.com/archive/file/$pkgname-$pkgver.tar.gz"
 
 main(){
+    test "$1" = pass && return 1
     cd $srcdir/$pkgname-$pkgver && \
         ./configure && \
         make && \
         make check && \
         sudo make install
 }
+
+help_main(){
+    cat <<__EOC__ 1>&2
+Install options:
+
+    pass     Do nothing.
+__EOC__
+}
+
 
 #######################################
 # internal functions
@@ -151,19 +161,19 @@ __clean(){
     rm -rf $srcdir
 }
 
-help_help(){
-    cat <<__EOC__
-$__script_name help: usage: $__script_name help <command>
-__EOC__
-}
+# help_help(){
+#     cat <<__EOC__
+# $__script_name help: usage: $__script_name help <command>
+# __EOC__
+# }
 
 __help(){
-    # add support help_*()
-    if test -n "$1"
-    then
-        help_"$1"
-        exit 0
-    fi
+    # add support help_*()?
+    # if test -n "$1"
+    # then
+    #     help_"$1"
+    #     exit 0
+    # fi
 
     cat <<__EOC__ 1>&2
 $__script_name: usage: $__script_name <command> [<args>]
@@ -171,14 +181,18 @@ $__script_name: usage: $__script_name <command> [<args>]
 Commands:
 
     install  Install package.
-             args are passed to install().
+             args are passed to main().
     info     Show info about this package.
     fetch    Only fetch and extract archives.
     help     Display this help message.
-             help <command> may provide additional help.
     version  Display version info.
 __EOC__
 # See '$__script_name help <command>' for more information if available.
+    if type help_main >/dev/null 2>&1
+    then
+        echo
+        help_main "$@"
+    fi
 }
 
 __version_info(){
@@ -217,7 +231,7 @@ __main(){
     fi
 }
 
-__version=0.2
+__version=0.2.1
 
 __script_name="$0"
 test -z "$startdir" && startdir="$PWD"
