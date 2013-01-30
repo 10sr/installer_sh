@@ -222,7 +222,7 @@ __main(){
     fi
 }
 
-__version=0.1.2
+__version=0.2
 
 __script_name="$0"
 test -z "$startdir" && startdir="$PWD"
