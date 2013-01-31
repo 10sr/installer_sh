@@ -181,7 +181,7 @@ $__script_name: usage: $__script_name <command> [<args>]
 Commands:
 
     install  Install package.
-             args are passed to main().
+             May accept additional args.
     info     Show info about this package.
     fetch    Only fetch and extract archives.
     help     Display this help message.
