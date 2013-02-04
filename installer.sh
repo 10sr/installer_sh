@@ -222,7 +222,8 @@ __main(){
             __clean)
                 __clean "$@" ;;
             __debug)
-                debug=echo
+                set -x
+                debug=:
                 __install "$@" ;;
             *)
                 __message "invalid command: $cmd"

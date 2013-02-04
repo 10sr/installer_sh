@@ -18,7 +18,7 @@ pull_rep(){
     fi
 }
 
-install(){
+main(){
     pull_rep || return 1
 
     cd $srcdir/$pkgname && \
