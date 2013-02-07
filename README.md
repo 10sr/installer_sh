@@ -79,12 +79,16 @@ Url of the software.
 
 Function called when installing package.
 
-When functions are called, archives listed in $sources were downloaded and
-extracted, and $startdir and $srcdir were set. $startdir is the working
-directory when install.sh was executed and $srcdir is directory where
+Before functions are called, archives listed in `$sources` were downloaded and
+extracted, and `$startdir` and `$srcdir` were set. `$startdir` is the working
+directory when install.sh was executed and `$srcdir` is directory where
 downloaded archive files are extracted. Usually you can use a command like
 `cd $srcdir/$pkgname-$pkgver` to go into the directory the files were
 extracted.
+
+### help_main() (optional)
+
+Additional help descripting options of `main()`.
 
 ## Execute installer.sh
 
