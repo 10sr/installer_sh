@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Installer.sh by 10sr</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Installer.sh</h1>
+        <p>Template for installation automation script</p>
+
+        <p class="view"><a href="https://github.com/10sr/installer_sh">View the Project on GitHub <small>10sr/installer_sh</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/10sr/installer_sh/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/10sr/installer_sh/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/10sr/installer_sh">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>installer.sh</h1>
+
+<p>Write your own installation script!</p>
+
+<h2>What is installer.sh for?</h2>
+
+<p>I'm tired of downloading tarballs, extracting them and running commands like
+<code>./configure</code>, <code>make</code>, <code>make install</code> ... many many times. Definitely developers
+know where to download the tarballs from, how to build the softwares and how to
+install them. They should write the script to automate installation.</p>
+
+<p>installer.sh makes it easy to write scripts automating installation. You can
+automate installion of your great softwares or some other useful softwares by
+defining a few variables and a function in installer.sh.</p>
+
+<p>installer.sh is strongly inspired by <a href="http://www.archlinux.org/">ArchLinux</a>'s
+makepkg and <a href="https://wiki.archlinux.org/index.php/Creating_Packages">PKGBUILD</a>.</p>
+
+<h2>Things installer.sh does not do</h2>
+
+<p>installer.sh is not a package manager. It does not:</p>
+
+<ul>
+<li>manage installed packages</li>
+<li>record installed files (and uninstall packages by removing these files)</li>
+<li>update packages automatically</li>
+</ul><p>Users who want to install softwares should not use installer.sh when the
+softwares are provided by package managers. This script is for softwares which
+are not so popular, or not updated to newer version on some systems.</p>
+
+<h2>Install</h2>
+
+<p>installer.sh is not intended to install. Use this script as a template and write
+commands as you need!</p>
+
+<h2>Defining a package</h2>
+
+<p>Define some variables and functions.</p>
+
+<h3>$pkgname</h3>
+
+<p>Name of package.</p>
+
+<h3>$source (if needed)</h3>
+
+<p>Newline separated list of urls of archives. Archive listed here will be
+downloaded and extracted automatically. If the archives already exist, do
+not download them twice.</p>
+
+<p>Each line is just the url to download archives or can be like
+<code>$pkgname-$pkgver.tar.gz::http://example.com/file.tar.gz</code>. In this form, you can
+change the name of downloaded archive.</p>
+
+<p>Each Downloaded file is extracted immediately in $srcdir If it has a archive
+ suffix.</p>
+
+<h3>$pkgver (optional)</h3>
+
+<p>Version of the software.</p>
+
+<h3>$pkgdesc (optional)</h3>
+
+<p>Short description.</p>
+
+<h3>$url (optional)</h3>
+
+<p>Url of the software.</p>
+
+<h3>main()</h3>
+
+<p>Function called when installing package.</p>
+
+<p>Before functions are called, archives listed in <code>$sources</code> were downloaded and
+extracted, and <code>$startdir</code> and <code>$srcdir</code> were set. <code>$startdir</code> is the working
+directory when install.sh was executed and <code>$srcdir</code> is directory where
+downloaded archive files are extracted. Usually you can use a command like
+<code>cd $srcdir/$pkgname-$pkgver</code> to go into the directory the files were
+extracted.</p>
+
+<h3>help_main() (optional)</h3>
+
+<p>Additional help descripting options of <code>main()</code>.</p>
+
+<h2>Execute installer.sh</h2>
+
+<p>To install the package, run:</p>
+
+<pre><code>$ ./installer.sh install
+</code></pre>
+
+<p>Only download archive listed in $source and extract them by following command:</p>
+
+<pre><code>$ ./installer.sh fetch
+</code></pre>
+
+<p>This command is especially useful when you are writing <code>main()</code> or you want
+to issue some commands before install.</p>
+
+<h2>License</h2>
+
+<p>All code licensed under CC0: <a href="http://creativecommons.org/publicdomain/zero/1.0/">http://creativecommons.org/publicdomain/zero/1.0/</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/10sr">10sr</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
