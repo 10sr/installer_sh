@@ -176,7 +176,7 @@ __help(){
     # fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [<args>]
+$__script_name: usage: $__script_name <command> [<options>]
 
 Commands:
 
