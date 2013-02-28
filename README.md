@@ -110,6 +110,8 @@ To only download archive listed in $source and extract them, run:
 This command is especially useful when you are writing `main()` or you want
 to issue some commands before calling `main()`.
 
+`$ ./installer.sh help` for additional help.
+
 ### Note: fetching and extracting
 
 Fetching a file and extracting are done when and only when the file does not
