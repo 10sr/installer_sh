@@ -19,7 +19,7 @@ install_tmux(){
         ./configure --prefix=$_prefix && \
         make && \
         make check && \
-        make install || return $?
+        make install
 }
 
 install_libevent(){
@@ -30,7 +30,7 @@ install_libevent(){
         ./configure --prefix=$_prefix && \
         make && \
         make check && \
-        make install || return $?
+        make install
 }
 
 main(){
@@ -50,7 +50,7 @@ main(){
 
 help_main(){
     cat <<__EOC__ 1>&2
-Install options:
+Install arguments:
 
     `printf '%-9s' $pkgname`Install $pkgname only.
     `printf '%-9s' $pkg2name`Install $pkg2name only.

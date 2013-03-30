@@ -146,9 +146,14 @@ __install(){
 }
 
 __show_info(){
-    echo "Package: $pkgname $pkgver"
-    echo "    $pkgdesc"
-    echo "URL: $url"
+    if test -n "$1"
+    then
+        eval "echo \"$1\""
+    else
+        echo "Package: $pkgname $pkgver"
+        echo "    $pkgdesc"
+        echo "URL: $url"
+    fi
 }
 
 __fetch(){
@@ -176,12 +181,12 @@ __help(){
     # fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [<args>]
+$__script_name: usage: $__script_name <command> [<options>]
 
 Commands:
 
     install  Install package.
-             May accept additional args.
+             May accept additional options.
     info     Show info about this package.
     fetch    Only fetch and extract archives.
     help     Display this help message.
