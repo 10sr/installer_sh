@@ -1,7 +1,7 @@
 #!/bin/sh
 
 pkgname=tmux
-pkgver=1.7
+pkgver=1.8
 pkgdesc="terminal multiplexer"
 url=http://tmux.sourceforge.net/
 
