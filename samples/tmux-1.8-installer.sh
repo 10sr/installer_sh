@@ -11,14 +11,27 @@ pkg2ver=2.0.21-stable
 source="http://downloads.sourceforge.net/tmux/$pkgname-$pkgver.tar.gz
 https://github.com/downloads/libevent/libevent/$pkg2name-$pkg2ver.tar.gz"
 
+expr "`uname`" : 'CYGWIN.*' >/dev/null && \
+    source="$srouce
+https://gist.github.com/10sr/5794078/raw/ba4c975d805bd4d9f37ef5c35270f13d2b70cab6/tmux-cygwin.patch"
+
 _prefix=$HOME/.local
+
+_tmux_apply_patch(){
+    if expr "`uname`" * 'CYGWIN.*' >/dev/null
+    then
+        patch -p <../tmux-cygwin.patch
+    else
+        return 0
+    fi
+}
 
 install_tmux(){
     cd $srcdir/$pkgname-$pkgver && \
+        _tmux_apply_patch && \
         LDFLAGS=-L$_prefix/lib CFLAGS=-I$_prefix/include \
         ./configure --prefix=$_prefix && \
         make && \
-        make check && \
         make install
 }
 
@@ -29,7 +42,6 @@ install_libevent(){
         # --disable-shared when installing.
         ./configure --prefix=$_prefix && \
         make && \
-        make check && \
         make install
 }
 
