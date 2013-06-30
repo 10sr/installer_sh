@@ -24,8 +24,12 @@ __EOC__
 }
 
 
-######################################
+################################################################################
 # installer.sh --- Template for installation automation script
+
+# Auther: 10sr
+# URL: https://github.com/10sr/installer_sh
+# Lisence: CC0: http://creativecommons.org/publicdomain/zero/1.0/
 
 # Usage
 # -----
@@ -40,12 +44,6 @@ __EOC__
 #     fetch    Only fetch and extract archives.
 #     help     Display this help message.
 #     version  Display version info.
-
-# License
-# -------
-
-# Originally developed by 10sr, at https://github.com/10sr/installer_sh
-# All code licensed under CC0: http://creativecommons.org/publicdomain/zero/1.0/
 
 
 
