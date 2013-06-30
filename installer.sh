@@ -24,8 +24,34 @@ __EOC__
 }
 
 
+######################################
+# installer.sh --- Template for installation automation script
+
+# Usage
+# -----
+
+# installer.sh <command> [<option> ...]
+
+# Commands:
+
+#     install  Install package.
+#              May accept additional options.
+#     info     Show info about this package.
+#     fetch    Only fetch and extract archives.
+#     help     Display this help message.
+#     version  Display version info.
+
+# License
+# -------
+
+# Originally developed by 10sr, at https://github.com/10sr/installer_sh
+# All code licensed under CC0: http://creativecommons.org/publicdomain/zero/1.0/
+
+
+
 #######################################
-# internal functions
+# Internal functions
+# Do not modify below!
 
 #######################################
 # utilities
@@ -181,7 +207,7 @@ __help(){
     # fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [<options>]
+$__script_name: usage: $__script_name <command> [<option> ...]
 
 Commands:
 
