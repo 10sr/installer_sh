@@ -1,60 +1,19 @@
 #!/bin/sh
 
-pkgname=tmux
-pkgver=1.7
-pkgdesc="terminal multiplexer"
-url=http://tmux.sourceforge.net/
+pkgname=atool
+pkgver=0.39.0
+pkgdesc="Script for managing file archives of various types"
+url="http://www.nongnu.org/atool/"
+source="http://savannah.nongnu.org/download/$pkgname/$pkgname-$pkgver.tar.gz"
 
-pkg2name=libevent
-pkg2ver=2.0.21-stable
-
-source="http://downloads.sourceforge.net/tmux/$pkgname-$pkgver.tar.gz
-https://github.com/downloads/libevent/libevent/$pkg2name-$pkg2ver.tar.gz"
-
-_prefix=$HOME/.local
-
-install_tmux(){
-    cd $srcdir/$pkgname-$pkgver && \
-        LDFLAGS=-L$_prefix/lib CFLAGS=-I$_prefix/include \
-        ./configure --prefix=$_prefix && \
-        make && \
-        make check && \
-        make install || return $?
-}
-
-install_libevent(){
-    cd $srcdir/$pkg2name-$pkg2ver && \
-        # when change the directory where this lib is installed,
-        # LD_LIBRARY_PATH must include $PREFIX/lib when executing tmux, or use
-        # --disable-shared when installing.
-        ./configure --prefix=$_prefix && \
-        make && \
-        make check && \
-        make install || return $?
-}
+_prefix="$HOME/.local"
 
 main(){
-    if test -z "$1"
-    then
-        install_libevent && install_tmux
-    elif test "$1" = $pkg2name
-    then
-        install_libevent
-    elif test "$1" = $pkgname
-    then
-        install_tmux
-    else
-        return 1
-    fi
-}
-
-help_main(){
-    cat <<__EOC__ 1>&2
-Install arguments:
-
-    `printf '%-9s' $pkgname`Install $pkgname only.
-    `printf '%-9s' $pkg2name`Install $pkg2name only.
-__EOC__
+    cd $srcdir/$pkgname-$pkgver && \
+        ./configure --prefix="$_prefix" && \
+        make && \
+        make check && \
+        make install
 }
 
 #######################################
@@ -179,9 +138,14 @@ __install(){
 }
 
 __show_info(){
-    echo "Package: $pkgname $pkgver"
-    echo "    $pkgdesc"
-    echo "URL: $url"
+    if test -n "$1"
+    then
+        eval "echo \"$1\""
+    else
+        echo "Package: $pkgname $pkgver"
+        echo "    $pkgdesc"
+        echo "URL: $url"
+    fi
 }
 
 __fetch(){
@@ -209,12 +173,12 @@ __help(){
     # fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [<args>]
+$__script_name: usage: $__script_name <command> [<options>]
 
 Commands:
 
     install  Install package.
-             May accept additional args.
+             May accept additional options.
     info     Show info about this package.
     fetch    Only fetch and extract archives.
     help     Display this help message.
@@ -255,7 +219,8 @@ __main(){
             __clean)
                 __clean "$@" ;;
             __debug)
-                debug=echo
+                set -x
+                debug=:
                 __install "$@" ;;
             *)
                 __message "invalid command: $cmd"
