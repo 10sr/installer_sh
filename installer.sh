@@ -181,13 +181,13 @@ __show_info(){
 }
 
 __fetch(){
-b    # todo: use fetch() if exists
+b    # todo: ? use fetch() if exists
     __fetch_files && __warn "Fetch files done."
 }
 
 __clean(){
     # this may be very dengerous
-    rm -rf $srcdir
+    rm -rf "$srcdir"
 }
 
 # help_help(){
@@ -261,10 +261,12 @@ __main(){
     fi
 }
 
-__version=0.2.1
+__version=0.2.2
 
 __script_name="$0"
+# currently do not overwrite values if already set, but this may change
 test -z "$startdir" && startdir="$PWD"
 test -z "$srcdir" && srcdir="${startdir}/src-${pkgname}"
 # todo: how to do about security?
+# how to assure internal codes not changed?
 __main "$@"
