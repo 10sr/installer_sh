@@ -15,8 +15,37 @@ main(){
 }
 
 
+################################################################################
+# sl-installer.sh --- Install sl
+
+# Usage
+# -----
+
+# installer.sh <command> [<option> ...]
+
+# Commands:
+
+#     install  Install package.
+#              May accept additional options.
+#     info     Show info about this package.
+#     fetch    Only fetch and extract archives.
+#     help     Display this help message.
+#     version  Display version info.
+
+
+
+################################################################################
+# installer.sh --- Template for installation automation script
+
+# Auther: 10sr
+# URL: https://github.com/10sr/installer_sh
+# Lisence: CC0: http://creativecommons.org/publicdomain/zero/1.0/
+
+
+
 #######################################
-# internal functions
+# Internal functions
+# Do not modify below!
 
 #######################################
 # utilities
@@ -137,19 +166,24 @@ __install(){
 }
 
 __show_info(){
-    echo "Package: $pkgname $pkgver"
-    echo "    $pkgdesc"
-    echo "URL: $url"
+    if test -n "$1"
+    then
+        eval "echo \"$1\""
+    else
+        echo "Package: $pkgname $pkgver"
+        echo "    $pkgdesc"
+        echo "URL: $url"
+    fi
 }
 
 __fetch(){
-b    # todo: use fetch() if exists
+b    # todo: ? use fetch() if exists
     __fetch_files && __warn "Fetch files done."
 }
 
 __clean(){
     # this may be very dengerous
-    rm -rf $srcdir
+    rm -rf "$srcdir"
 }
 
 # help_help(){
@@ -167,12 +201,12 @@ __help(){
     # fi
 
     cat <<__EOC__ 1>&2
-$__script_name: usage: $__script_name <command> [<args>]
+$__script_name: usage: $__script_name <command> [<option> ...]
 
 Commands:
 
     install  Install package.
-             May accept additional args.
+             May accept additional options.
     info     Show info about this package.
     fetch    Only fetch and extract archives.
     help     Display this help message.
@@ -213,7 +247,8 @@ __main(){
             __clean)
                 __clean "$@" ;;
             __debug)
-                debug=echo
+                set -x
+                debug=:
                 __install "$@" ;;
             *)
                 __message "invalid command: $cmd"
@@ -222,10 +257,12 @@ __main(){
     fi
 }
 
-__version=0.2.1
+__version=0.2.3
 
 __script_name="$0"
+# currently do not overwrite values if already set, but this may change
 test -z "$startdir" && startdir="$PWD"
 test -z "$srcdir" && srcdir="${startdir}/src-${pkgname}"
 # todo: how to do about security?
+# how to assure internal codes not changed?
 __main "$@"
