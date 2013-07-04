@@ -3,7 +3,7 @@
 pkgname=name
 pkgver=0.1
 pkgdesc="Package description"
-url="http://example.com/software/page"
+url="http://example.com/software/$pkgname"
 source="http://example.com/archive/file/$pkgname-$pkgver.tar.gz"
 
 main(){
@@ -25,11 +25,7 @@ __EOC__
 
 
 ################################################################################
-# installer.sh --- Template for installation automation script
-
-# Auther: 10sr
-# URL: https://github.com/10sr/installer_sh
-# Lisence: CC0: http://creativecommons.org/publicdomain/zero/1.0/
+# name-installer.sh --- Install name
 
 # Usage
 # -----
@@ -44,6 +40,19 @@ __EOC__
 #     fetch    Only fetch and extract archives.
 #     help     Display this help message.
 #     version  Display version info.
+
+# Install options:
+
+#     pass     Do nothing.
+
+
+
+################################################################################
+# installer.sh --- Template for installation automation script
+
+# Auther: 10sr
+# URL: https://github.com/10sr/installer_sh
+# Lisence: CC0: http://creativecommons.org/publicdomain/zero/1.0/
 
 
 
@@ -261,7 +270,7 @@ __main(){
     fi
 }
 
-__version=0.2.2
+__version=0.2.3
 
 __script_name="$0"
 # currently do not overwrite values if already set, but this may change
