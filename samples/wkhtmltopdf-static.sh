@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 _pkgname=wkhtmltopdf
 pkgname=$_pkgname-static
