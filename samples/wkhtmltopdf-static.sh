@@ -5,7 +5,6 @@ pkgname=$_pkgname-static
 pkgver=0.11.0_rc1
 
 pkgdesc="Convert html to pdf using webkit (qtwebkit)"
-arch=(i686 x86_64)
 url="http://code.google.com/p/$_pkgname"
 
 _carch=`uname -m`
@@ -31,7 +30,7 @@ main(){
 }
 
 ################################################################################
-# ack-installer.sh --- Install ack
+# wkhtmltopdf-static-installer.sh --- Install wkhtmltopdf static binary
 
 # Usage
 # -----
