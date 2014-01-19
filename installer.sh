@@ -55,9 +55,9 @@ __EOC__
 # Lisence: CC0: http://creativecommons.org/publicdomain/zero/1.0/
 
 
-
 #######################################
-# Internal functions
+__sha256sum=305a12fedc093a5f9f16eace388d9604add6a23b3964b61736c81cc51063b23b
+# INSTALLER_SH INTERNALS
 # Do not modify below!
 
 #######################################
@@ -212,6 +212,7 @@ __help(){
     #     help_"$1"
     #     exit 0
     # fi
+    __version_info
 
     cat <<__EOC__ 1>&2
 $__script_name: usage: $__script_name <command> [<option> ...]
@@ -235,6 +236,13 @@ __EOC__
 
 __version_info(){
     echo $__script_name v$__version 1>&2
+    echo sha256sum: $__sha256sum 1>&2
+    echo 1>&2
+    cat <<__EOC__ 1>&2
+Use command like
+    sed -ne '/INSTALLER_SH INTERNALS/,$ p' $__script_name | sha256sum
+to verify the internals of this script.
+__EOC__
 }
 
 __main(){
@@ -270,7 +278,7 @@ __main(){
     fi
 }
 
-__version=0.2.3
+__version=0.2.4
 
 __script_name="$0"
 # currently do not overwrite values if already set, but this may change
