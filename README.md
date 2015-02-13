@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/10sr/installer_sh.svg)](https://travis-ci.org/10sr/installer_sh)
+
+
+
 installer.sh
 ============
 
