@@ -56,7 +56,7 @@ __EOC__
 
 
 #######################################
-__sha256sum=305a12fedc093a5f9f16eace388d9604add6a23b3964b61736c81cc51063b23b
+__sha256sum=4a4ca1b489e24937da966cb1a14a16aa45df65e88b9bfe21516325ab9d4117e2
 # INSTALLER_SH INTERNALS
 # Do not modify below!
 
