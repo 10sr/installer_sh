@@ -1,0 +1,4 @@
+language: shell
+script: make test
+notifications:
+  email: 8slashes+travis-ci@gmail.com
